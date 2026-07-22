@@ -137,7 +137,7 @@ XSS (Reflected)
 Input:
 
 ```
-Stephen
+Omolola
 ```
 
 Submit the form.
@@ -145,7 +145,7 @@ Submit the form.
 Expected Output:
 
 ```
-Hello Stephen
+Hello Omolola
 ```
 
 ---
