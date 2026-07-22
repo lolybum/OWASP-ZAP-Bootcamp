@@ -1,228 +1,314 @@
-# Week 1 – OWASP ZAP Fundamentals
+# Week 01 – OWASP ZAP Fundamentals & HTTP Traffic Analysis
 
-## Objective
-
-The objective of this lab was to become familiar with OWASP ZAP, understand HTTP request/response communication, configure a proxy, and manually explore a vulnerable web application (DVWA).
-
----
-
-# Lab Environment
-
-| Component | Version |
-|-----------|----------|
-| Kali Linux | Latest |
-| OWASP ZAP | 2.17 |
-| DVWA | Docker |
-| Browser | Firefox |
-| Proxy | localhost:8080 |
+<p align="center">
+<img src="../owasp-zap-banner.png" width="900">
+</p>
 
 ---
 
-# Skills Practiced
+# Executive Summary
 
-- Installing OWASP ZAP
-- Configuring Firefox proxy
-- Running DVWA in Docker
-- Manual web application exploration
-- HTTP Requests
-- HTTP Responses
-- Cookies
-- Session Management
-- HTTP Status Codes
-- Sites Tree Navigation
+This laboratory introduces the core functionality of **OWASP Zed Attack Proxy (OWASP ZAP)** through manual exploration of the **Damn Vulnerable Web Application (DVWA)**. The objective was to understand how an intercepting proxy captures and analyzes HTTP requests and responses between a client and a web application.
+
+During the assessment, OWASP ZAP was configured as the browser proxy to intercept live web traffic generated from DVWA. HTTP requests, responses, headers, URLs, cookies, and application resources were examined to establish a foundational understanding of web application security testing.
+
+This exercise represents the first stage of professional web application penetration testing and serves as the foundation for subsequent vulnerability assessments.
+
+> **This assessment was performed exclusively in an isolated laboratory environment for educational purposes. No production systems were targeted.**
 
 ---
 
-# Pages Explored
+# Lab Information
 
-- Home
-- Instructions
-- Setup
-- Security
-- PHP Info
-- SQL Injection
-- SQL Injection Blind
-- Command Injection
-- File Inclusion
-- File Upload
-- XSS Reflected
-- XSS Stored
-- XSS DOM
-- CSRF
-- Weak Session IDs
-- Brute Force
-- CAPTCHA
+| Item | Value |
+|------|-------|
+| Lab | Week 01 – OWASP ZAP Fundamentals |
+| Platform | DVWA |
+| Tool | OWASP ZAP 2.17 |
+| Browser | Mozilla Firefox |
+| Operating System | Kali Linux |
+| Deployment | Docker |
+| Target URL | http://127.0.0.1:4280 |
+| Security Level | Low |
 
 ---
 
-# HTTP Request Analysis
-
-Example request captured in ZAP:
-
-GET /vulnerabilities/sqli/ HTTP/1.1
-
-Important headers observed:
-
-- Host
-- User-Agent
-- Cookie
-- Accept
-- Referer
-
----
-
-# Cookie Analysis
-
-Captured Session Cookie:
-
-PHPSESSID
-
-Security Cookie:
-
-security=low
-
-Purpose:
-
-- Maintains authenticated session
-- Tracks logged in user
-- Defines DVWA security level
-
----
-
-# Key Learning Outcomes
-
-- Learned how browsers communicate using HTTP.
-- Understood the purpose of request headers.
-- Learned how cookies maintain sessions.
-- Configured OWASP ZAP as an interception proxy.
-- Explored DVWA through the ZAP Sites tree.
-
----
-
-# Screenshots
-
-# Week 1 – OWASP ZAP Fundamentals
-
-## Objective
-
-Learn the OWASP ZAP interface, understand HTTP requests and responses, navigate the Sites Tree, and inspect captured web traffic using DVWA.
-
----
-
-## Screenshots
-
-### ZAP Home Screen
-
-![ZAP Home](screenshots/01-zap-home.png)
-
-**Figure 1:** OWASP ZAP main interface showing the Quick Start workspace and navigation panels.
-
----
-
-### Sites Tree
-
-![Sites Tree](screenshots/02-sites-tree.png)
-
-**Figure 2:** The Sites Tree displays all discovered pages and application resources while browsing DVWA.
-
----
-
-### HTTP Request
-
-![HTTP Request](screenshots/03-http-request.png)
-
-**Figure 3:** HTTP request captured by OWASP ZAP showing the request headers sent to the DVWA SQL Injection page.
-
----
-
-### HTTP Response
-
-![HTTP Response](screenshots/04-http-response.png)
-
-**Figure 4:** OWASP ZAP captured the HTTP 200 OK response from the DVWA SQL Injection page. The Response tab displays server response headers and the HTML source code returned by the web server.
-
----
-
-### History Panel
-
-![History Panel](screenshots/05-history-panel.png)
-
-**Figure 5:** The History panel records all HTTP requests intercepted while browsing DVWA. Each request includes the method, URL, status code, response time, and timestamp, allowing analysts to review and analyze web traffic.
-
----
-
-### Security Level
-
-![Security Level](screenshots/06-security-low.png)
-
-**Figure 6:** DVWA security level configured to **Low** for learning and testing purposes.
-
----
-
-### DVWA Vulnerabilities
-
-![DVWA Vulnerabilities](screenshots/07-dvwa-vulnerabilities.png)
-
-**Figure 7:** DVWA vulnerability modules available for testing throughout the bootcamp.
-
-## ZAP Dashboard
-
-![ZAP](screenshots/01-zap-home.png)
-
----
-
-## Sites Tree
-
-![Sites](screenshots/02-sites-tree.png)
-
----
-
-## HTTP Request
-
-![Request](screenshots/03-http-request.png)
-
----
-
-## HTTP Response
-
-![Response](screenshots/04-http-response.png)
-
----
-
-## History
-
-![History](screenshots/05-history-tab.png)
-
----
-
-## Cookie Header
-
-![Cookie](screenshots/06-cookie-header.png)
-
----
-
-## DVWA Security Level
-
-![Security](screenshots/07-security-low.png)
-
----
-
-## DVWA Pages
-
-![Pages](screenshots/08-dvwa-pages.png)
+# Objectives
+
+The objectives of this laboratory were to:
+
+- Install and configure OWASP ZAP
+- Configure Firefox to use OWASP ZAP as an intercepting proxy
+- Understand proxy-based web application testing
+- Capture HTTP requests and responses
+- Analyze HTTP headers
+- Review browser-server communications
+- Explore the OWASP ZAP interface
+- Document web traffic using professional reporting techniques
 
 ---
 
 # Tools Used
 
-- OWASP ZAP
-- Firefox
-- Docker
+- OWASP ZAP 2.17
+- Mozilla Firefox
 - DVWA
+- Docker
 - Kali Linux
+- GitHub
 
 ---
 
-# Conclusion
+# OWASP ZAP Overview
 
-This lab established the foundation for future web application penetration testing exercises. Understanding HTTP communication, cookies, session management, and proxy interception is essential before performing vulnerability assessments such as SQL Injection, XSS, CSRF, and File Inclusion.
+OWASP ZAP (Zed Attack Proxy) is an open-source web application security testing tool maintained by the Open Worldwide Application Security Project (OWASP).
+
+Primary capabilities include:
+
+- Intercepting Proxy
+- Passive Scanning
+- Active Scanning
+- Request Replay
+- Spidering
+- Fuzzing
+- Authentication Testing
+- Session Analysis
+- Manual Penetration Testing
+
+---
+
+# Lab Methodology
+
+The assessment followed the methodology below:
+
+1. Deploy DVWA using Docker.
+2. Launch OWASP ZAP.
+3. Configure Firefox to use localhost:8080 as its proxy.
+4. Browse the target application.
+5. Capture HTTP requests.
+6. Inspect HTTP responses.
+7. Review application resources.
+8. Analyze HTTP headers.
+9. Document findings.
+
+---
+
+# Screenshots
+
+## OWASP ZAP Home Screen
+
+![OWASP ZAP](screenshots/01-zap-home.png)
+
+**Figure 1:** OWASP ZAP interface after launching the application.
+
+---
+
+## Sites Tree
+
+![Sites Tree](screenshots/02-sites-tree.png)
+
+**Figure 2:** ZAP automatically discovers the application's directory structure while browsing DVWA.
+
+---
+
+## HTTP Request
+
+![HTTP Request](screenshots/03-zap-request.png)
+
+**Figure 3:** HTTP request captured by OWASP ZAP showing browser communication with the target application.
+
+---
+
+## HTTP Response
+
+![HTTP Response](screenshots/04-http-response.png)
+
+**Figure 4:** HTTP response returned by the server containing status code, headers, and HTML content.
+
+---
+
+## History Panel
+
+![History](screenshots/05-history-panel.png)
+
+**Figure 5:** History panel displaying captured HTTP requests exchanged during testing.
+
+---
+
+# Findings
+
+## Finding 1
+
+### Successful Proxy Configuration
+
+**Severity:** Informational
+
+**Observation**
+
+Mozilla Firefox successfully routed traffic through OWASP ZAP, allowing complete visibility into HTTP communications between the client and the web application.
+
+---
+
+## Finding 2
+
+### HTTP Request Analysis
+
+**Severity:** Informational
+
+**Observation**
+
+Captured requests contained:
+
+- HTTP Method
+- URL
+- Host Header
+- Cookies
+- User-Agent
+- Referer
+- Query Parameters
+
+These components provide valuable insight into how browsers communicate with web applications.
+
+---
+
+## Finding 3
+
+### HTTP Response Analysis
+
+**Severity:** Informational
+
+**Observation**
+
+The server returned standard HTTP responses including:
+
+```
+HTTP/1.1 200 OK
+```
+
+The responses contained:
+
+- Status Code
+- Response Headers
+- HTML Content
+- Content-Type
+- Cookies
+- Cache-Control Directives
+
+---
+
+## Finding 4
+
+### Site Mapping
+
+**Severity:** Informational
+
+**Observation**
+
+OWASP ZAP successfully mapped the application's directory structure through passive browsing, enabling analysts to identify accessible resources for further testing.
+
+---
+
+## Finding 5
+
+### Passive Security Analysis
+
+**Severity:** Informational
+
+**Observation**
+
+Passive inspection identified several application components that will become targets for subsequent assessments, including:
+
+- SQL Injection
+- Cross-Site Scripting (XSS)
+- Authentication
+- Session Management
+- File Upload
+- CSRF
+
+---
+
+# Risk Assessment
+
+| Category | Risk |
+|----------|------|
+| Proxy Misconfiguration | Low |
+| HTTP Traffic Exposure | Informational |
+| Passive Enumeration | Informational |
+
+Overall Risk Rating:
+
+# 🟢 INFORMATIONAL
+
+No exploitation was performed during this laboratory.
+
+---
+
+# Skills Demonstrated
+
+- Web Application Security
+- Proxy Configuration
+- HTTP Protocol Analysis
+- OWASP ZAP Navigation
+- Manual Web Testing
+- Traffic Inspection
+- HTTP Header Analysis
+- Browser Proxy Configuration
+- Technical Documentation
+- GitHub Portfolio Development
+
+---
+
+# Learning Outcomes
+
+This exercise strengthened practical experience in:
+
+- Configuring interception proxies
+- Understanding browser-server communications
+- Reading HTTP requests
+- Reading HTTP responses
+- Understanding web application architecture
+- Using OWASP ZAP professionally
+- Documenting penetration testing activities
+
+---
+
+# Next Steps
+
+The knowledge gained during this lab serves as the foundation for advanced web application security testing, including:
+
+- SQL Injection
+- Cross-Site Scripting (XSS)
+- Broken Authentication
+- Insecure Direct Object References (IDOR)
+- Session Management Testing
+- JSON Web Token (JWT) Analysis
+
+---
+
+# References
+
+OWASP ZAP
+
+https://www.zaproxy.org/
+
+OWASP Web Security Testing Guide
+
+https://owasp.org/www-project-web-security-testing-guide/
+
+OWASP Top 10
+
+https://owasp.org/www-project-top-ten/
+
+DVWA
+
+https://github.com/digininja/DVWA
+
+MITRE ATT&CK
+
+https://attack.mitre.org/
+
+---
+
+# Disclaimer
+
+This laboratory was conducted within an isolated penetration testing environment using the Damn Vulnerable Web Application (DVWA). All testing activities were performed solely for educational purposes. No production systems, third-party infrastructure, or unauthorized targets were assessed.
