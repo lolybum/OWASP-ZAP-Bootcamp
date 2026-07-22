@@ -230,40 +230,38 @@ Captured:
 
 ---
 
-## Finding 3
 
-### HTTP Response Analysis
+## Finding 3 – HTTP Response Analysis
 
-Severity:
+**Severity:** Informational
 
-Informational
+### Observation
 
-Observation:
+OWASP ZAP captured the HTTP response returned by the DVWA application after the reflected XSS payload was submitted.
 
-The server returned:
+**Response Status:**
 
-```
+```http
 HTTP/1.1 200 OK
 ```
 
-The response included the reflected user input.
+The server successfully processed the request and returned an HTTP 200 OK status. The HTML response contained the user-supplied input without proper output encoding, allowing the malicious JavaScript payload to be reflected back to the browser.
 
----
+### Evidence
 
-## Finding 4
+![HTTP Response](screenshots/05-zap-response.png)
 
-### Request Replay
+**Figure 5:** HTTP response captured by OWASP ZAP showing the server returned a **200 OK** status after processing the reflected XSS payload. The response includes the reflected user input, confirming that the application returned untrusted data to the client without appropriate sanitization or output encoding.
 
-Severity:
+### Security Impact
 
-Informational
+Although the response itself is not an error, reflecting untrusted input directly into the HTML page creates the conditions necessary for a **Reflected Cross-Site Scripting (XSS)** vulnerability. An attacker could craft a malicious URL that executes arbitrary JavaScript in a victim's browser, potentially leading to:
 
-Observation:
-
-The Requester tool successfully replayed the captured HTTP request.
-
-The server returned an identical response.
-
+- Session cookie theft
+- Credential harvesting
+- Unauthorized actions performed as the victim
+- Defacement of web content
+- Client-side malware delivery
 ---
 
 # Screenshot Gallery
